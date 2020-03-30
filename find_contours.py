@@ -4,7 +4,7 @@ import imutils
 from skimage import exposure
 import pytesseract
 
-image = cv2.imread('/root/RABOTA/OCR/data_set/hqdefault.jpg')
+image = cv2.imread('/root/RABOTA/OCR/data_set/2017-10-31-08-09-34.jpg')
 
 ratio = image.shape[0] / 300.0
 orig = image.copy()
@@ -31,9 +31,9 @@ for c in cnts:
 		screenCnt = approx
 		break
 
-cv2.drawContours(image, [screenCnt], -1, (0, 255, 0), 3)
-cv2.imshow("Game Boy Screen", image)
-cv2.waitKey(0)
+#cv2.drawContours(image, [screenCnt], -1, (0, 255, 0), 3)
+#cv2.imshow("Game Boy Screen", image)
+#cv2.waitKey(0)
 
 pts = screenCnt.reshape(4, 2)
 rect = np.zeros((4, 2), dtype = "float32")
@@ -85,6 +85,12 @@ cv2.imwrite("cropped.png", crop)
 cv2.imshow("image", image)
 #cv2.imshow("edge", edged)
 cv2.imshow("warp", imutils.resize(warp, height = 300))
+warp = imutils.resize(warp, height = 300)
+
+cv2.imwrite('/root/warp.png', warp)
+config = ('-l eng --oem 1 --psm 12')
+text = pytesseract.image_to_string(warp, config=config)
+print(text)
 #cv2.imshow("crop", imutils.resize(crop, height = 300))
 cv2.waitKey(0)
 '''FIND CONTOURS WORKING
