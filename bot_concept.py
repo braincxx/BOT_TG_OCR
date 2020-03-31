@@ -2,16 +2,16 @@ import telebot
 import os
 from telebot import apihelper
 
-'''
+
 directory_save = r'/root/RABOTA/BOT_TG/NEW_COLLECTION/'
 csv_data_dump = r'/root/RABOTA/BOT_TG/data_name.csv'
 csv_data_training = r'/root/RABOTA/BOT_TG/data_training.csv'
-'''
 
+'''
 directory_save = r'/root/BOT/PHOTO/'
 csv_data_dump = r'/root/BOT/data_name.csv'
 csv_data_training = r'/root//BOT/data_training.csv'
-
+'''
 last_uuid = ''
 last_id = ''
 last_metrs = 0
@@ -20,7 +20,7 @@ last_type = ''
 
 #1128659144:AAFmr_DS-p-_iPRUk1Xc7U-Mv7edaWfz07M - Concept_2
 
-#apihelper.proxy = {'https': 'socks5://96.96.33.133:1080'}
+apihelper.proxy = {'https': 'socks5://96.96.33.133:1080'}
 bot = telebot.TeleBot('1128659144:AAFmr_DS-p-_iPRUk1Xc7U-Mv7edaWfz07M')
 
 keyboard1 = telebot.types.ReplyKeyboardMarkup()
@@ -34,7 +34,20 @@ keyboard_start.row('Да', 'Нет')
 keyboard_remove = telebot.types.ReplyKeyboardRemove()
 
 
+priv_message = '''Привет, {}!!!
 
+Тебя приветствует бот, призванный помочь отслеживать твои физические показатели и улучшать их. Но пока я только учусь, и у тебя есть возможность помочь мне. 
+
+Для этого нужно отправить мне фотографию своих результатов, я задам тебе пару уточняющих вопросов, о том сколько метров ты прошёл и сколько времени это заняло. И уже в скором времени сам смогу отвечать на эти вопросы за тебя, я быстро учусь😉
+
+Чтобы узнать результат тренировки, будь то простой “Just Row”  или “Select Workout”, нажми “Menu -> Memory -> List by Date” и пришли мне фотографию своих результатов. 
+
+Если вдруг забудешь, то просто напиши мне /help или /start'''
+
+help_message_print = '''Отправь мне фотографию своих результатов, я задам тебе пару уточняющих вопросов, о том сколько метров ты прошёл и сколько времени это заняло. И уже в скором времени сам смогу отвечать на эти вопросы за тебя, я быстро учусь😉
+
+Чтобы узнать результат тренировки, будь то простой “Just Row”  или “Select Workout”, нажми “Menu -> Memory -> List by Date” и пришли мне фотографию своих результатов.
+'''
 
 types_training = ['single distance', 'single time', 'intervals distance', 'intervals time']
 
@@ -51,9 +64,14 @@ def start_message(message):
             bot.send_message(message.chat.id, "Для проведения дальнейшей аналитики, отправляйте фотографии результатов.")
             return
     f.close()
-    bot.send_message(message.chat.id, 'Желаете ли Вы ввести свои данные для проведения дальнешего анализа?', reply_markup=keyboard_start)
+    bot.send_message(message.chat.id, priv_message.format(message.from_user.username))
+#    bot.send_message(message.chat.id, 'Желаете ли Вы ввести свои данные для проведения дальнешего анализа?', reply_markup=keyboard_start)
 #    bot.send_message(message.chat.id, 'Просто отправляйте мне фотографии')#, reply_markup=keyboard1)
 #   print(message)
+
+@bot.message_handler(commands=['help'])
+def help_message(message):
+    bot.send_message(message.chat.id, help_message_print)
 
 @bot.message_handler(content_types=['text'])
 def registration(message):
