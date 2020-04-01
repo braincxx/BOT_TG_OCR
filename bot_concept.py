@@ -1,8 +1,12 @@
 import telebot
 import os
 from telebot import apihelper
+import re
 
+#regular for time
+reg = re.compile('(:?\d\d:|\d:){0,1}(:?\d\d|\d){0,1}(:?:\d\d.\d|:\d.\d){1}')
 
+#config
 directory_save = r'/root/RABOTA/BOT_TG/NEW_COLLECTION/'
 csv_data_dump = r'/root/RABOTA/BOT_TG/data_name.csv'
 csv_data_training = r'/root/RABOTA/BOT_TG/data_training.csv'
@@ -12,6 +16,8 @@ directory_save = r'/root/BOT/PHOTO/'
 csv_data_dump = r'/root/BOT/data_name.csv'
 csv_data_training = r'/root//BOT/data_training.csv'
 '''
+
+#global variable for writing in csv file
 last_uuid = ''
 last_id = ''
 last_metrs = 0
@@ -65,7 +71,7 @@ def start_message(message):
             return
     f.close()
     bot.send_message(message.chat.id, priv_message.format(message.from_user.username))
-#    bot.send_message(message.chat.id, 'Желаете ли Вы ввести свои данные для проведения дальнешего анализа?', reply_markup=keyboard_start)
+    bot.send_message(message.chat.id, 'Желаете ли Вы оставить свои данные для проведения дальнешего анализа?', reply_markup=keyboard_start)
 #    bot.send_message(message.chat.id, 'Просто отправляйте мне фотографии')#, reply_markup=keyboard1)
 #   print(message)
 
